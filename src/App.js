@@ -6,36 +6,41 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://localhost:3000/files/data');
+      const result = await axios.get('http://localhost:3030/files/data');
       setData(result.data.result);
-      console.log(result.data.result)
     };
     fetchData();
   }, []);
 
   return (
-    <div>
-      <h1>Lista de Usuarios</h1>
+<div>
       <table>
         <thead>
           <tr>
-            <th>File Name</th>
-            <th>Test</th>
+            <th>File</th>
+            <th>Text</th>
             <th>Number</th>
             <th>Hex</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((file, index) => (
-            <tr key={file.file}>
-              <td>{file.file}</td>
-              {
-                file.lines.map(({text, number, hex})=> (
-                <td>{text}</td>
-                ))
-              }
-
-            </tr>
+          {data.map((file, i) => (
+            <React.Fragment key={i}>
+              <tr>
+                <td>{file.file}</td>
+                <td>{file.lines[0]?.text}</td>
+                <td>{file.lines[1]?.number}</td>
+                <td>{file.lines[1]?.hex}</td>
+              </tr>
+              {file.lines.slice(2).map((line, j) => (
+                <tr key={`${i}-${j}`}>
+                  <td></td>
+                  <td>{line.text}</td>
+                  <td>{line.number}</td>
+                  <td>{line.hex}</td>
+                </tr>
+              ))}
+            </React.Fragment>
           ))}
         </tbody>
       </table>
